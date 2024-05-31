@@ -6,7 +6,6 @@
  * @copyright MIT see LICENSE.md
  */
 
-import 'node:path'
 import fs from 'node:fs'
 import { Buffer } from 'node:buffer'
 import * as csv from 'csv/sync'
