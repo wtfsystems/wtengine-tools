@@ -10,9 +10,10 @@ import 'node:path'
 import fs from 'node:fs'
 import { Buffer } from 'node:buffer'
 import * as csv from 'csv/sync'
+import { dim, cyan } from 'kolorist'
 
 import { scriptError } from '@spongex/script-error'
-import wtf from './_common.js'
+import * as wtf from './_common.js'
 
 wtf.scriptTitle(`WTEngine Script Utility`)
 
@@ -30,7 +31,7 @@ if(fs.existsSync(args[1]) && !wtf.confirmPrompt(`Output file '${args[1]}' exists
 /*
  * Parse the input file
  */
-process.stdout.write(`Parsing data file '${args[0]}'...\n\n`)
+console.log(`Parsing data file '${args[0]}'...\n`)
 var gameData = null
 switch(args[0].split('.')[1].toLowerCase()) {
   /* CSV file data */
@@ -40,8 +41,7 @@ switch(args[0].split('.')[1].toLowerCase()) {
   /* JSON file data */
   case 'json':
     gameData = []
-    {let tempData = fs.readFileSync(args[0])
-    tempData = JSON.parse(tempData)
+    {const tempData = JSON.parse(fs.readFileSync(args[0]).toString())
     Object.keys(tempData).forEach(key => { gameData.push(tempData[key]) })}
     break
   /* Unsupported file types */
@@ -50,16 +50,16 @@ switch(args[0].split('.')[1].toLowerCase()) {
 }
 if(gameData == null || !(gameData instanceof Array))
   scriptError('Parsing game data failed.')
-process.stdout.write(`Parsed datafile '${args[0]}.'\n`)
-process.stdout.write(`${gameData.length} rows read.\n\n`)
+console.log(`Parsed datafile '${args[0]}.'`)
+console.log(`${gameData.length} rows read.\n`)
 
 /*
  * Generate the data file buffer
  */
-process.stdout.write(`Generating game data file '${args[1]}'...\n`)
+console.log(`Generating game data file '${args[1]}'...`)
 var rowCounter = Number(0)        //  Row counter for error reporting
 var dataBuffer = Buffer.alloc(0)  //  Buffer to store binary file
-gameData.forEach(row => {
+gameData.forEach((row:any) => {
   rowCounter++
   if(row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length.`)
 
@@ -83,9 +83,9 @@ if(Buffer.byteLength(dataBuffer, 'utf8') == 0)
  */
 try {
   fs.writeFileSync(args[1], dataBuffer)
-  process.stdout.write(`\nWrote data file '${args[1]}'\n${rowCounter} total commands.\n`)
-  process.stdout.write(`Size: ${Buffer.byteLength(dataBuffer, 'utf8')} bytes.\n\n`)
-} catch(error) { scriptError(error) }
+  console.log(`\nWrote data file '${args[1]}'\n${rowCounter} total commands.`)
+  console.log(`Size: ${Buffer.byteLength(dataBuffer, 'utf8')} bytes.\n`)
+} catch (error:any) { scriptError(error.message) }
 
-process.stdout.write(`${wtf.colors.DIM}${wtf.colors.CYAN}Script conversion done!${wtf.colors.CLEAR}\n\n`)
+console.log(dim(cyan(`Script conversion done!\n`)))
 process.exit(0)
