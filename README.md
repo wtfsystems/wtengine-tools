@@ -1,3 +1,3 @@
-#  WTEngine Tools
+# WTEngine Tools
 
 ## WIP on TypeScript conversion
