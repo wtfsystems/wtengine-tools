@@ -1,7 +1,7 @@
 {
   "name": "@wtfsystems/wtengine-tools",
   "version": "0.2.0",
-  "description": "wtengine",
+  "description": "WTEngine Development Tools",
   "author": "Matthew Evans",
   "license": "MIT",
   "repository": {
