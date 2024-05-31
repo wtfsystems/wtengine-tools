@@ -25,7 +25,7 @@
     "prepublishOnly": "tsup"
   },
   "bin": {
-    "wte-mkscript": "scripts/wte-mkscript.mjs"
+    "wte-mkscript": "dist/wte-mkscript.js"
   },
   "type": "module",
   "tsup": {
