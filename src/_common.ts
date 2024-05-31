@@ -7,12 +7,14 @@
  * 
  */
 
-import fs from 'fs'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
-import { exec } from 'child_process'
-import { spawn } from 'child_process'
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path'
+import { exec } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import inquirer from 'inquirer'
+
+import { scriptError } from '@spongex/script-error'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -93,16 +95,6 @@ const scriptTitle = (title) => {
   process.stdout.write(`\n`)
 }
 wtf.scriptTitle = scriptTitle
-
-/**
- * Display an error message and exit script.
- * @param {String} message Message to display.
- */
-const scriptError = (message) => {
-  process.stdout.write(`${colors.RED}Error:  ${message}  Exiting...${colors.CLEAR}\n`)
-  process.exit(1)
-}
-wtf.scriptError = scriptError
 
 /**
  * Clears the log file.

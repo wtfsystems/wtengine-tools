@@ -1,29 +1,57 @@
 {
-  "name": "@wtfsystems/wtengine",
-  "version": "0.8.3",
+  "name": "@wtfsystems/wtengine-tools",
+  "version": "0.1.0",
   "description": "wtengine",
+  "author": "Matthew Evans",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wtfsystems/wtengine.git"
+    "url": "git+https://github.com/wtfsystems/wtengine-tools.git"
   },
   "keywords": [
     "engine",
-    "gamedev"
+    "gamedev",
+    "development",
+    "tools",
+    "scripts"
   ],
-  "author": "Matthew Evans",
-  "url": "https://www.wtfsystems.net",
-  "license": "MIT",
+  "url": "https://www.npmjs.com/package/@wtfsystems/wtengine-tools",
+  "homepage": "https://github.com/wtfsystems/wtengine-tools#readme",
   "bugs": {
-    "url": "https://github.com/wtfsystems/wtengine/issues"
+    "url": "https://github.com/wtfsystems/wtengine-tools/issues"
   },
-  "homepage": "https://github.com/wtfsystems/wtengine#readme",
-  "type": "module",
-  "scripts": {},
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "tsup"
+  },
   "bin": {
     "wte-mkscript": "scripts/wte-mkscript.mjs"
   },
+  "type": "module",
+  "tsup": {
+    "entry": [
+      "./src/wte-mkscript.ts"
+    ],
+    "format": "esm",
+    "sourcemap": false,
+    "clean": true
+  },
+  "files": [
+    "./dist",
+    "LICENSE.md",
+    "README.md"
+  ],
   "dependencies": {
+    "@spongex/script-error": "^1.0.0",
     "csv": "^6.2.5",
-    "inquirer": "^9.1.4"
+    "inquirer": "^9.1.4",
+    "kolorist": "^1.8.0",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.13.0",
+    "@types/prompts": "^2.4.9",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
   }
 }

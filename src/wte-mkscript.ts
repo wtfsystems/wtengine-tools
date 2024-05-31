@@ -6,12 +6,13 @@
  * @copyright MIT see LICENSE.md
  */
 
-import wtf from './_common.mjs'
-
-import 'path'
-import fs from 'fs'
-import { Buffer } from 'buffer'
+import 'node:path'
+import fs from 'node:fs'
+import { Buffer } from 'node:buffer'
 import * as csv from 'csv/sync'
+
+import { scriptError } from '@spongex/script-error'
+import wtf from './_common.js'
 
 wtf.scriptTitle(`WTEngine Script Utility`)
 
@@ -19,12 +20,12 @@ wtf.scriptTitle(`WTEngine Script Utility`)
  * Process command arguments
  */
 const args = process.argv.slice(2)
-if(args[0] === undefined) wtf.scriptError('Please specify an input file.')
-if(!fs.existsSync(args[0])) wtf.scriptError(`Input file '${args[0]}' does not exist.`)
+if(args[0] === undefined) scriptError('Please specify an input file.')
+if(!fs.existsSync(args[0])) scriptError(`Input file '${args[0]}' does not exist.`)
 if(args[1] === undefined) args[1] = args[0].split('.')[0]
 if(args[1].split('.')[1] === undefined) args[1] += '.sdf'
 if(fs.existsSync(args[1]) && !wtf.confirmPrompt(`Output file '${args[1]}' exists, overwrite?`))
-  wtf.scriptError(`Output file '${args[1]}' already exists.`)
+  scriptError(`Output file '${args[1]}' already exists.`)
 
 /*
  * Parse the input file
@@ -45,10 +46,10 @@ switch(args[0].split('.')[1].toLowerCase()) {
     break
   /* Unsupported file types */
   default:
-    wtf.scriptError(`File format '${args[0].split('.')[1]}' not supported.`)
+    scriptError(`File format '${args[0].split('.')[1]}' not supported.`)
 }
 if(gameData == null || !(gameData instanceof Array))
-  wtf.scriptError('Parsing game data failed.')
+  scriptError('Parsing game data failed.')
 process.stdout.write(`Parsed datafile '${args[0]}.'\n`)
 process.stdout.write(`${gameData.length} rows read.\n\n`)
 
@@ -60,7 +61,7 @@ var rowCounter = Number(0)        //  Row counter for error reporting
 var dataBuffer = Buffer.alloc(0)  //  Buffer to store binary file
 gameData.forEach(row => {
   rowCounter++
-  if(row.length !== 6) wtf.scriptError(`Row ${rowCounter}: incorrect length.`)
+  if(row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length.`)
 
   //  Write each message:  timer / sys / to / from / cmd / args
   const timerBuffer = Buffer.alloc(8)
@@ -75,7 +76,7 @@ gameData.forEach(row => {
 
 //  Verify data generated
 if(Buffer.byteLength(dataBuffer, 'utf8') == 0)
-  wtf.scriptError('No data generated.')
+  scriptError('No data generated.')
 
 /*
  * Write out the data file buffer
@@ -84,7 +85,7 @@ try {
   fs.writeFileSync(args[1], dataBuffer)
   process.stdout.write(`\nWrote data file '${args[1]}'\n${rowCounter} total commands.\n`)
   process.stdout.write(`Size: ${Buffer.byteLength(dataBuffer, 'utf8')} bytes.\n\n`)
-} catch(error) { wtf.scriptError(error) }
+} catch(error) { scriptError(error) }
 
 process.stdout.write(`${wtf.colors.DIM}${wtf.colors.CYAN}Script conversion done!${wtf.colors.CLEAR}\n\n`)
 process.exit(0)
