@@ -47,7 +47,8 @@
     "@types/inquirer": "^9.0.7",
     "csv": "^6.3.9",
     "inquirer": "^9.2.23",
-    "kolorist": "^1.8.0"
+    "kolorist": "^1.8.0",
+    "yaml": "^2.4.2"
   },
   "devDependencies": {
     "@types/node": "^20.13.0",
