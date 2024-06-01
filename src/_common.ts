@@ -58,8 +58,6 @@ export class PROJECT {
  */
 export const paths = {
   ENGINE_BUILD_LOCATION:       path.join(PROJECT.ROOT_LOCATION, 'wte-build'),
-  ENGINE_BUILD_DEBUG_LOCATION: path.join(PROJECT.ROOT_LOCATION, 'wte-build-debug'),
-  ENGINE_LOG_LOCATION:         path.join(PROJECT.ROOT_LOCATION, 'wte-logs'),
   ENGINE_TEMP_LOCATION:        path.join(PROJECT.ROOT_LOCATION, 'wte-temp')
 }
 
@@ -70,7 +68,7 @@ export const files = {
   CONFIG_SCRIPT:    path.join(import.meta.dirname, 'wte-config.js'),
   SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'wte-syscheck.js'),
   SETTINGS_FILE:    path.join(PROJECT.ROOT_LOCATION, 'settings.json'),
-  LOG_FILE: ``      //  Set by script
+  LOG_FILE:         path.join(PROJECT.ROOT_LOCATION, 'build.log')
 }
 
 /**
@@ -85,26 +83,29 @@ export const scriptTitle = (title:string):void => {
 }
 
 /**
- * Clears the log file.
- * Will exit script if the log filename was not set.
+ * Clears the log file
+ * Will exit script if the PROJECT.ROOT_LOCATION was not set
+ * @throws Error on fail then exits script
  */
 export const clearLog = ():void => {
-  if(files.LOG_FILE === '') scriptError(`Must set a log file in the script first!`)
+  if(PROJECT.ROOT_LOCATION === '')
+    scriptError(`Must set the project root path in the script first!`)
   try {
-    fs.unlinkSync(`${paths.ENGINE_LOG_LOCATION}/${files.LOG_FILE}`)
-  } catch (error:any) {}
+    fs.unlinkSync(files.LOG_FILE)
+  } catch (error:any) { scriptError(error.message) }
 }
 
 /**
- * Write a message to the log file.
- * Will exit script if the log filename was not set.
- * @param message String to write.
- * @throws Error on fail then exits script.
+ * Write a message to the log file
+ * Will exit script if the PROJECT.ROOT_LOCATION was not set
+ * @param message String to write
+ * @throws Error on fail then exits script
  */
 export const writeLog = (message:string):void => {
-  if(files.LOG_FILE === '') scriptError(`Must set a log file in the script first!`)
+  if(PROJECT.ROOT_LOCATION === '')
+    scriptError(`Must set the project root path in the script first!`)
   try {
-    fs.appendFileSync(`${paths.ENGINE_LOG_LOCATION}/${files.LOG_FILE}`, message)
+    fs.appendFileSync(files.LOG_FILE, message)
   } catch (error:any) { scriptError(error.message) }
 }
 
