@@ -58,9 +58,12 @@ export class PROJECT {
 
 /**
  * Folder paths
+ * Relevant to {@link PROJECT.#ROOT_LOCATION}
  */
 export const paths = {
+  /** Location for engine build artifacts */
   ENGINE_BUILD_LOCATION:       path.join(PROJECT.ROOT_LOCATION, 'wte-build'),
+  /** Location for source downloads */
   ENGINE_TEMP_LOCATION:        path.join(PROJECT.ROOT_LOCATION, 'wte-temp')
 }
 
@@ -68,9 +71,13 @@ export const paths = {
  * Files
  */
 export const files = {
+  /** Configuration script location */
   CONFIG_SCRIPT:    path.join(import.meta.dirname, 'wte-config.js'),
+  /** System check script location */
   SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'wte-syscheck.js'),
+  /** Settings file location relevant to {@link PROJECT.#ROOT_LOCATION} */
   SETTINGS_FILE:    path.join(PROJECT.ROOT_LOCATION, 'settings.json'),
+  /** Log file location relevant to {@link PROJECT.#ROOT_LOCATION} */
   LOG_FILE:         path.join(PROJECT.ROOT_LOCATION, 'build.log')
 }
 
