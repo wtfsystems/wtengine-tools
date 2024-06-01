@@ -77,6 +77,7 @@ export const files = {
 /**
  * Show script info
  * @param title Script title to use
+ * @param log Log to file or not.  Defaults to false
  */
 export const scriptTitle = (title:string, log?:boolean):void => {
   log = log || false
