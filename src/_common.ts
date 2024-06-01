@@ -37,7 +37,7 @@ export const constants = {
   APP_NAME:               appInfo['name'],
   APP_VERSION:            appInfo['version'],
   APP_URL:                appInfo['homepage'],
-  PROJECT_ROOT_LOCATION:  import.meta.dirname.substring(0, import.meta.dirname.lastIndexOf(`/`)),
+  PROJECT_ROOT_LOCATION:  import.meta.dirname.substring(0, import.meta.dirname.lastIndexOf(path.sep)),
 }
 
 /**
