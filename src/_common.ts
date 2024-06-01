@@ -11,7 +11,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { exec } from 'node:child_process'
 import inquirer from 'inquirer'
-import { dim, green, yellow, cyan } from 'kolorist'
+import { dim, green, yellow, cyan, stripColors } from 'kolorist'
 
 import { __locale } from '@spongex/system-locale'
 import { scriptError } from '@spongex/script-error'
@@ -129,7 +129,7 @@ export const writeLog = (message:string):void => {
   if(PROJECT.ROOT_LOCATION === '')
     scriptError(`Must set the project root path in the script first!`)
   try {
-    fs.appendFileSync(files.LOG_FILE, message)
+    fs.appendFileSync(files.LOG_FILE, stripColors(message))
   } catch (error:any) { scriptError(error.message) }
 }
 
@@ -260,8 +260,8 @@ export const runCommand = async (cmd:string, opts?:runCommandOpts) => {
   return await new Promise ((resolve, _reject) => {
     exec(cmd, options, (error, stdout, stderr) => {
       if(log) {
-        if(stdout != ``) writeLog(`Output:  ${stdout}\n`)
-        if(stderr != ``) writeLog(`Output:  ${stderr}\n`)
+        if(stdout != ``) writeLog(`Output:\n${stdout}\n`)
+        if(stderr != ``) writeLog(`Error:\n${stderr}\n`)
       }
       if(error) resolve(false)
       resolve(true)
