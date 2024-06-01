@@ -14,7 +14,7 @@ import { dim, cyan } from 'kolorist'
 import { scriptError } from '@spongex/script-error'
 import * as wtf from './_common.js'
 
-wtf.scriptTitle(`WTEngine Script Utility`)
+wtf.scriptTitle(`WTEngine Make Script Utility`)
 
 /*
  * Process command arguments
