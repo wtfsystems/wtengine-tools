@@ -15,7 +15,7 @@ import { dim, green, yellow, cyan } from 'kolorist'
 
 import { scriptError } from '@spongex/script-error'
 
-const appInfo = JSON.parse(
+const packageJSON = JSON.parse(
   fs.readFileSync(path.join(import.meta.dirname, '..', 'package.json')).toString()
 )
 
@@ -33,10 +33,10 @@ export const config = {
 /**
  * Constants
  */
-export const constants = {
-  APP_NAME:               appInfo['name'],
-  APP_VERSION:            appInfo['version'],
-  APP_URL:                appInfo['homepage']
+export const scriptInfo = {
+  NAME:     packageJSON['name'],
+  VERSION:  packageJSON['version'],
+  URL:      packageJSON['homepage']
 }
 
 /**
@@ -79,9 +79,9 @@ export const files = {
  */
 export const scriptTitle = (title:string):void => {
   console.log(`${cyan(`${title}`)} - ` +
-    dim(cyan(`${constants.APP_NAME}`)) + ` - ` +
-    dim(cyan(`ver ${constants.APP_VERSION}`)))
-  console.log(dim(yellow(`${constants.APP_URL}\n`)))
+    dim(cyan(`${scriptInfo.NAME}`)) + ` - ` +
+    dim(cyan(`ver ${scriptInfo.VERSION}`)))
+  console.log(dim(yellow(`${scriptInfo.URL}\n`)))
 }
 
 /**
