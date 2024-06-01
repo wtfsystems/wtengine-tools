@@ -13,6 +13,7 @@ import { exec } from 'node:child_process'
 import inquirer from 'inquirer'
 import { dim, green, yellow, cyan } from 'kolorist'
 
+import { __locale } from '@spongex/system-locale'
 import { scriptError } from '@spongex/script-error'
 
 import type { ChildProcess } from 'node:child_process'
@@ -77,11 +78,21 @@ export const files = {
  * Show script info
  * @param title Script title to use
  */
-export const scriptTitle = (title:string):void => {
+export const scriptTitle = (title:string, log?:boolean):void => {
+  log = log || false
+
   console.log(`${cyan(`${title}`)} - ` +
     dim(cyan(scriptInfo.NAME)) + ` - ` +
     dim(cyan(`ver ${scriptInfo.VERSION}`)))
   console.log(dim(yellow(`${scriptInfo.URL}\n`)))
+
+  if(log) {
+    writeLog(`${title} - ${scriptInfo.NAME} - ver ${scriptInfo.VERSION}\n`)
+    writeLog(`${scriptInfo.URL}\n`)
+    writeLog(`Run time:  `)
+    writeLog(new Date().toLocaleString(__locale, { timeZoneName: 'short' }))
+    writeLog(`\n\n`)
+  }
 }
 
 /**
@@ -247,8 +258,8 @@ export const runCommand = async (cmd:string, opts?:runCommandOpts) => {
  * @param process The process object to watch
  * @returns A fulfilled promise with the result
  */
-export const onProcessExit = async (proc:ChildProcess, log:boolean) => {
-  log = log || false
+export const onProcessExit = async (proc:ChildProcess, log?:boolean) => {
+  log = log || true
   return new Promise((resolve, reject) => {
     proc.once('exit', (code) => {
       if(log) writeLog(`Return code:  ${code}\n`)

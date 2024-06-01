@@ -43,8 +43,9 @@
   ],
   "dependencies": {
     "@spongex/script-error": "^1.0.0",
+    "@spongex/system-locale": "^1.0.0",
     "@types/inquirer": "^9.0.7",
-    "csv": "^6.2.5",
+    "csv": "^6.3.9",
     "inquirer": "^9.2.23",
     "kolorist": "^1.8.0"
   },
