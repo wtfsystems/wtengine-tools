@@ -65,9 +65,9 @@ export class PROJECT {
  */
 export const paths = {
   /** Location for engine build artifacts */
-  ENGINE_BUILD_LOCATION:       path.join(PROJECT.ROOT_LOCATION, 'wte-build'),
+  ENGINE_BUILD_LOCATION:  path.join(PROJECT.ROOT_LOCATION, 'wte-build'),
   /** Location for source downloads */
-  ENGINE_TEMP_LOCATION:        path.join(PROJECT.ROOT_LOCATION, 'wte-temp')
+  ENGINE_TEMP_LOCATION:   path.join(PROJECT.ROOT_LOCATION, 'wte-temp')
 }
 
 /**
