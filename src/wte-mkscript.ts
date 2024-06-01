@@ -32,6 +32,7 @@ if(fs.existsSync(args[1]) && !wtf.confirmPrompt(`Output file '${args[1]}' exists
  */
 console.log(`Parsing data file '${args[0]}'...\n`)
 let gameData:any = null
+
 switch(args[0].split('.')[1].toLowerCase()) {
   /* CSV file data */
   case 'csv':
@@ -47,8 +48,10 @@ switch(args[0].split('.')[1].toLowerCase()) {
   default:
     scriptError(`File format '${args[0].split('.')[1]}' not supported.`)
 }
+
 if(gameData == null || !(gameData instanceof Array))
   scriptError('Parsing game data failed.')
+
 console.log(`Parsed datafile '${args[0]}.'`)
 console.log(`${gameData.length} rows read.\n`)
 
