@@ -44,13 +44,13 @@
   "dependencies": {
     "@spongex/script-error": "^1.0.0",
     "@spongex/system-locale": "^1.0.0",
-    "@types/inquirer": "^9.0.7",
     "csv": "^6.3.9",
     "inquirer": "^9.2.23",
     "kolorist": "^1.8.0",
     "yaml": "^2.4.2"
   },
   "devDependencies": {
+    "@types/inquirer": "^9.0.7",
     "@types/node": "^20.13.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5"
