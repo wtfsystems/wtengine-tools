@@ -31,7 +31,7 @@ if(fs.existsSync(args[1]) && !wtf.confirmPrompt(`Output file '${args[1]}' exists
  * Parse the input file
  */
 console.log(`Parsing data file '${args[0]}'...\n`)
-var gameData = null
+let gameData:any = null
 switch(args[0].split('.')[1].toLowerCase()) {
   /* CSV file data */
   case 'csv':
@@ -56,8 +56,8 @@ console.log(`${gameData.length} rows read.\n`)
  * Generate the data file buffer
  */
 console.log(`Generating game data file '${args[1]}'...`)
-var rowCounter = Number(0)        //  Row counter for error reporting
-var dataBuffer = Buffer.alloc(0)  //  Buffer to store binary file
+let rowCounter = Number(0)        //  Row counter for error reporting
+let dataBuffer = Buffer.alloc(0)  //  Buffer to store binary file
 gameData.forEach((row:any) => {
   rowCounter++
   if(row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length.`)

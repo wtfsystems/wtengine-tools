@@ -34,29 +34,29 @@ export const config = {
  * Constants
  */
 export const constants = {
-  APP_NAME:              appInfo['name'],
-  APP_VERSION:           appInfo['version'],
-  APP_URL:               appInfo['homepage'],
-  ENGINE_ROOT_LOCATION:  import.meta.dirname.substring(0, import.meta.dirname.lastIndexOf(`/`)),
+  APP_NAME:               appInfo['name'],
+  APP_VERSION:            appInfo['version'],
+  APP_URL:                appInfo['homepage'],
+  PROJECT_ROOT_LOCATION:  import.meta.dirname.substring(0, import.meta.dirname.lastIndexOf(`/`)),
 }
 
 /**
  * Folder paths
  */
 export const paths = {
-  ENGINE_BUILD_LOCATION:       `${constants.ENGINE_ROOT_LOCATION}/wte-build`,
-  ENGINE_BUILD_DEBUG_LOCATION: `${constants.ENGINE_ROOT_LOCATION}/wte-build-debug`,
-  ENGINE_LOG_LOCATION:         `${constants.ENGINE_ROOT_LOCATION}/wte-logs`,
-  ENGINE_TEMP_LOCATION:        `${constants.ENGINE_ROOT_LOCATION}/wte-temp`
+  ENGINE_BUILD_LOCATION:       path.join(constants.PROJECT_ROOT_LOCATION, 'wte-build'),
+  ENGINE_BUILD_DEBUG_LOCATION: path.join(constants.PROJECT_ROOT_LOCATION, 'wte-build-debug'),
+  ENGINE_LOG_LOCATION:         path.join(constants.PROJECT_ROOT_LOCATION, 'wte-logs'),
+  ENGINE_TEMP_LOCATION:        path.join(constants.PROJECT_ROOT_LOCATION, 'wte-temp')
 }
 
 /**
  * Files
  */
 export const files = {
-  CONFIG_SCRIPT:    `${import.meta.dirname}/wte-config.mjs`,
-  SYSCHECK_SCRIPT:  `${import.meta.dirname}/wte-syscheck.mjs`,
-  SETTINGS_FILE:    `${constants.ENGINE_ROOT_LOCATION}/settings.json`,
+  CONFIG_SCRIPT:    path.join(import.meta.dirname, 'wte-config.mjs'),
+  SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'wte-syscheck.mjs'),
+  SETTINGS_FILE:    path.join(constants.PROJECT_ROOT_LOCATION, 'settings.json'),
   LOG_FILE: ``      //  Set by script
 }
 
@@ -64,7 +64,7 @@ export const files = {
  * Show script info
  * @param title Script title to use
  */
-export const scriptTitle = (title:string) => {
+export const scriptTitle = (title:string):void => {
   console.log(`${cyan(`${title}`)} - ` +
     dim(cyan(`${constants.APP_NAME}`)) + ` - ` +
     dim(cyan(`ver ${constants.APP_VERSION}`)))
@@ -75,7 +75,7 @@ export const scriptTitle = (title:string) => {
  * Clears the log file.
  * Will exit script if the log filename was not set.
  */
-export const clearLog = () => {
+export const clearLog = ():void => {
   if(files.LOG_FILE === '') scriptError(`Must set a log file in the script first!`)
   try {
     fs.unlinkSync(`${paths.ENGINE_LOG_LOCATION}/${files.LOG_FILE}`)
@@ -88,7 +88,7 @@ export const clearLog = () => {
  * @param message String to write.
  * @throws Error on fail then exits script.
  */
-export const writeLog = (message:string) => {
+export const writeLog = (message:string):void => {
   if(files.LOG_FILE === '') scriptError(`Must set a log file in the script first!`)
   try {
     fs.appendFileSync(`${paths.ENGINE_LOG_LOCATION}/${files.LOG_FILE}`, message)
@@ -101,7 +101,7 @@ export const writeLog = (message:string) => {
  * @param dvalue Default answer (Y - true | N - false)
  * @returns True if default answer, else false
  */
-export const confirmPrompt = async (message:string, dvalue?:boolean) => {
+export const confirmPrompt = async (message:string, dvalue?:boolean):Promise<boolean> => {
   if(dvalue == undefined) dvalue = true
   return await inquirer.prompt([{
     default: dvalue,
@@ -116,7 +116,7 @@ export const confirmPrompt = async (message:string, dvalue?:boolean) => {
  * @param folder 
  * @returns True if the folder exists, else false.
  */
-export const checkFolder = (folder:string) => {
+export const checkFolder = (folder:string):boolean => {
   try { fs.accessSync(folder) } catch (error:any) { return false }
   return true
 }
@@ -126,7 +126,7 @@ export const checkFolder = (folder:string) => {
  * @param folder 
  * @throws Error on fail then exits script
  */
-export const makeFolder = (folder:string) => {
+export const makeFolder = (folder:string):void => {
   try {
     fs.accessSync(folder)
   } catch (error:any) {
@@ -141,7 +141,7 @@ export const makeFolder = (folder:string) => {
  * @param permissions File permissions to check, 'rwx' format.
  * @returns True if tests succeded, else false
  */
-export const checkSettings = (permissions:string) => {
+export const checkSettings = (permissions:string):boolean => {
   let checkFlags = []
   if(permissions === undefined) checkFlags.push(fs.constants.F_OK)
   else {
@@ -164,11 +164,10 @@ export const checkSettings = (permissions:string) => {
  * Load engine settings.
  * @returns Settings JSON object.  False on fail.
  */
-export const loadSettings = () => {
+export const loadSettings = ():string | boolean => {
   try {
-    const settings = fs.readFileSync(files.SETTINGS_FILE).toString()
-    return JSON.parse(settings)
-  } catch (err) {
+    return JSON.parse(fs.readFileSync(files.SETTINGS_FILE).toString())
+  } catch (error:any) {
     return false
   }
 }
@@ -180,9 +179,6 @@ export const loadSettings = () => {
  */
 export const saveSettings = (settings:JSON) => {
   if(!(settings instanceof Object)) scriptError(`Settings format not valid.`)
-
-  const oldSettings = loadSettings()
-  if(oldSettings) settings = oldSettings.concat(settings)
 
   try {
     fs.writeFileSync(files.SETTINGS_FILE, JSON.stringify(settings))
