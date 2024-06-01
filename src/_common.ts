@@ -29,7 +29,7 @@ export const config = {
   checkApps: [ "cmake", "git" ],
   gitURLs: [
     { name: "allegro5", url: "https://github.com/liballeg/allegro5" },
-    { name: "physfs", url: "https://github.com/icculus/physfs" }
+    { name: "physfs",   url: "https://github.com/icculus/physfs" }
   ]
 }
 
