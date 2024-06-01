@@ -37,8 +37,11 @@ export const config = {
  * Constants
  */
 export const scriptInfo = {
+  /** Name of script */
   NAME:     packageJSON['name'],
+  /** Version of script */
   VERSION:  packageJSON['version'],
+  /** Script documentation URL */
   URL:      packageJSON['homepage']
 }
 
