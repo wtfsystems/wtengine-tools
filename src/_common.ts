@@ -36,27 +36,40 @@ export const config = {
 export const constants = {
   APP_NAME:               appInfo['name'],
   APP_VERSION:            appInfo['version'],
-  APP_URL:                appInfo['homepage'],
-  PROJECT_ROOT_LOCATION:  import.meta.dirname.substring(0, import.meta.dirname.lastIndexOf(path.sep)),
+  APP_URL:                appInfo['homepage']
+}
+
+/**
+ * PROJECT class
+ * Used for setting the project root location
+ * Must be set before referencing the path variables below
+ */
+export class PROJECT {
+  /** Root location of the project */
+  static #ROOT_LOCATION = ''
+  /** Get the root location */
+  static get ROOT_LOCATION():string { return PROJECT.#ROOT_LOCATION }
+  /** Set the root location */
+  static set ROOT_LOCATION(val:string) { PROJECT.#ROOT_LOCATION = val }
 }
 
 /**
  * Folder paths
  */
 export const paths = {
-  ENGINE_BUILD_LOCATION:       path.join(constants.PROJECT_ROOT_LOCATION, 'wte-build'),
-  ENGINE_BUILD_DEBUG_LOCATION: path.join(constants.PROJECT_ROOT_LOCATION, 'wte-build-debug'),
-  ENGINE_LOG_LOCATION:         path.join(constants.PROJECT_ROOT_LOCATION, 'wte-logs'),
-  ENGINE_TEMP_LOCATION:        path.join(constants.PROJECT_ROOT_LOCATION, 'wte-temp')
+  ENGINE_BUILD_LOCATION:       path.join(PROJECT.ROOT_LOCATION, 'wte-build'),
+  ENGINE_BUILD_DEBUG_LOCATION: path.join(PROJECT.ROOT_LOCATION, 'wte-build-debug'),
+  ENGINE_LOG_LOCATION:         path.join(PROJECT.ROOT_LOCATION, 'wte-logs'),
+  ENGINE_TEMP_LOCATION:        path.join(PROJECT.ROOT_LOCATION, 'wte-temp')
 }
 
 /**
  * Files
  */
 export const files = {
-  CONFIG_SCRIPT:    path.join(import.meta.dirname, 'dist', 'wte-config.js'),
-  SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'dist', 'wte-syscheck.js'),
-  SETTINGS_FILE:    path.join(constants.PROJECT_ROOT_LOCATION, 'settings.json'),
+  CONFIG_SCRIPT:    path.join(import.meta.dirname, 'wte-config.js'),
+  SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'wte-syscheck.js'),
+  SETTINGS_FILE:    path.join(PROJECT.ROOT_LOCATION, 'settings.json'),
   LOG_FILE: ``      //  Set by script
 }
 
