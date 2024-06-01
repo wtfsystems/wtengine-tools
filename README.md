@@ -4,12 +4,7 @@ Toolkit for [WTEngine](https://github.com/wtfsystems/wtengine)
 
 Requires [NodeJS](https://nodejs.org/) to install and run
 
-Install globally:
-```
-npm i -g @spongex/wtengine-tools
-```
-
-Or per-project as a dev-dependency:
+Install per-project as a dev-dependency:
 ```
 npm i -D @spongex/wtengine-tools
 ```
