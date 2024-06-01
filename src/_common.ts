@@ -227,10 +227,15 @@ export const saveSettings = (settings:JSON) => {
   }
 }
 
+/** Options for runCommand */
 interface runCommandOpts {
+  /** Current working directory - default process.cwd() */
   cwd?:string
+  /** Process environment - default process.env */
   env?:NodeJS.ProcessEnv
+  /** Timeout value - default zero */
   timeout?:number
+  /** Log file - default true */
   log?:boolean
 }
 
