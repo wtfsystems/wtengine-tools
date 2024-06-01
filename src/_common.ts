@@ -113,7 +113,7 @@ export const writeLog = (message:string):void => {
 
 /**
  * Confirmation prompt
- * @param message Message to display.
+ * @param message Message to display
  * @param dvalue Default answer (Y - true | N - false)
  * @returns True if default answer, else false
  */
@@ -130,7 +130,7 @@ export const confirmPrompt = async (message:string, dvalue?:boolean):Promise<boo
 /**
  * Check if a folder exists
  * @param folder 
- * @returns True if the folder exists, else false.
+ * @returns True if the folder exists, else false
  */
 export const checkFolder = (folder:string):boolean => {
   try { fs.accessSync(folder) } catch (error:any) { return false }
@@ -153,8 +153,9 @@ export const makeFolder = (folder:string):void => {
 }
 
 /**
- * Verify access to engine settings file.  Passing nothing checks if the file simply exists.
- * @param permissions File permissions to check, 'rwx' format.
+ * Verify access to engine settings file
+ * Passing nothing checks if the file simply exists
+ * @param permissions File permissions to check, 'rwx' format
  * @returns True if tests succeded, else false
  */
 export const checkSettings = (permissions:string):boolean => {
@@ -177,8 +178,8 @@ export const checkSettings = (permissions:string):boolean => {
 }
 
 /**
- * Load engine settings.
- * @returns Settings JSON object.  False on fail.
+ * Load engine settings
+ * @returns Settings JSON object.  False on fail
  */
 export const loadSettings = ():string | boolean => {
   try {
@@ -189,9 +190,9 @@ export const loadSettings = ():string | boolean => {
 }
 
 /**
- * Save engine settings.
- * @param settings Settings as JSON object.
- * On fail, display error and exit running script.
+ * Save engine settings
+ * @param settings Settings as JSON object
+ * On fail, display error and exit running script
  */
 export const saveSettings = (settings:JSON) => {
   if(!(settings instanceof Object)) scriptError(`Settings format not valid.`)
@@ -212,12 +213,12 @@ interface runCommandOpts {
 }
 
 /**
- * Run a system command.
- * Waits for the command to complete but does not show output.
- * @param cmd Command to run.
- * @param opts Additional options.
- * @param log Log the result of the command to the log file.  Defaults to true.
- * @returns True if the command was successful, else false.
+ * Run a system command
+ * Waits for the command to complete but does not show output
+ * @param cmd Command to run
+ * @param opts Additional options to pass to 'exec'
+ * @param log Log the result of the command to the log file.  Defaults to true
+ * @returns True if the command was successful, else false
  */
 export const runCommand = async (cmd:string, opts?:runCommandOpts) => {
   const options = {
@@ -242,9 +243,9 @@ export const runCommand = async (cmd:string, opts?:runCommandOpts) => {
 }
 
 /**
- * Wait for a process to exit and return the result.
- * @param process The process object to watch.
- * @returns A fulfilled promise with the result.
+ * Wait for a process to exit and return the result
+ * @param process The process object to watch
+ * @returns A fulfilled promise with the result
  */
 export const onProcessExit = async (proc:ChildProcess, log:boolean) => {
   log = log || false
