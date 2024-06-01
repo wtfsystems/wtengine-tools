@@ -54,8 +54,8 @@ export const paths = {
  * Files
  */
 export const files = {
-  CONFIG_SCRIPT:    path.join(import.meta.dirname, 'wte-config.mjs'),
-  SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'wte-syscheck.mjs'),
+  CONFIG_SCRIPT:    path.join(import.meta.dirname, 'dist', 'wte-config.js'),
+  SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'dist', 'wte-syscheck.js'),
   SETTINGS_FILE:    path.join(constants.PROJECT_ROOT_LOCATION, 'settings.json'),
   LOG_FILE: ``      //  Set by script
 }
