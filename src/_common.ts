@@ -9,11 +9,13 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-//import { exec } from 'node:child_process'
+import { exec } from 'node:child_process'
 import inquirer from 'inquirer'
 import { dim, green, yellow, cyan } from 'kolorist'
 
 import { scriptError } from '@spongex/script-error'
+
+import type { ChildProcess } from 'node:child_process'
 
 const packageJSON = JSON.parse(
   fs.readFileSync(path.join(import.meta.dirname, '..', 'package.json')).toString()
@@ -77,7 +79,7 @@ export const files = {
  */
 export const scriptTitle = (title:string):void => {
   console.log(`${cyan(`${title}`)} - ` +
-    dim(cyan(`${scriptInfo.NAME}`)) + ` - ` +
+    dim(cyan(scriptInfo.NAME)) + ` - ` +
     dim(cyan(`ver ${scriptInfo.VERSION}`)))
   console.log(dim(yellow(`${scriptInfo.URL}\n`)))
 }
@@ -169,7 +171,7 @@ export const checkSettings = (permissions:string):boolean => {
   let result = true
   checkFlags.forEach(fFlag => {
     try { fs.accessSync(files.SETTINGS_FILE, fFlag)
-    } catch (err) { result = false }
+    } catch (error:any) { result = false }
   })
   return result
 }
@@ -202,12 +204,12 @@ export const saveSettings = (settings:JSON) => {
   }
 }
 
-/*interface runCommandOpts {
-  cwd:string
-  env:ProcessEnv
-  timeout:number
-  log:boolean
-}*/
+interface runCommandOpts {
+  cwd?:string
+  env?:NodeJS.ProcessEnv
+  timeout?:number
+  log?:boolean
+}
 
 /**
  * Run a system command.
@@ -217,18 +219,19 @@ export const saveSettings = (settings:JSON) => {
  * @param log Log the result of the command to the log file.  Defaults to true.
  * @returns True if the command was successful, else false.
  */
-/*export const runCommand = async (cmd:string, opts:runCommandOpts) => {
-  opts = opts || {}
-  opts.cwd = opts.cwd || process.cwd()
-  opts.env = opts.env || process.env
-  opts.timeout = opts.timeout || 0
-  opts.log = opts.log || true
+export const runCommand = async (cmd:string, opts?:runCommandOpts) => {
+  const options = {
+    cwd: opts!.cwd || process.cwd(),
+    env: opts!.env || process.env,
+    timeout: opts!.timeout || 0
+  }
+  const log = opts!.log || true
 
   if(log) writeLog(`Running command:  ${cmd}\n`)
 
-  return await new Promise ((resolve, reject) => {
-    const proc = exec(cmd, opts, (error, stdout, stderr) => {
-      if(opts.log) {
+  return await new Promise ((resolve, _reject) => {
+    exec(cmd, options, (error, stdout, stderr) => {
+      if(log) {
         if(stdout != ``) writeLog(`Output:  ${stdout}\n`)
         if(stderr != ``) writeLog(`Output:  ${stderr}\n`)
       }
@@ -236,14 +239,14 @@ export const saveSettings = (settings:JSON) => {
       resolve(true)
     })
   })
-}*/
+}
 
 /**
  * Wait for a process to exit and return the result.
  * @param process The process object to watch.
  * @returns A fulfilled promise with the result.
  */
-/*export const onProcessExit = async (proc, log) => {
+export const onProcessExit = async (proc:ChildProcess, log:boolean) => {
   log = log || false
   return new Promise((resolve, reject) => {
     proc.once('exit', (code) => {
@@ -256,4 +259,4 @@ export const saveSettings = (settings:JSON) => {
       reject(error)
     })
   })
-}*/
+}
