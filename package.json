@@ -28,14 +28,6 @@
     "wte-mkscript": "dist/wte-mkscript.js"
   },
   "type": "module",
-  "tsup": {
-    "entry": [
-      "./src/wte-mkscript.ts"
-    ],
-    "format": "esm",
-    "sourcemap": false,
-    "clean": true
-  },
   "files": [
     "./dist",
     "LICENSE.md",

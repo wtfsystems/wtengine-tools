@@ -24,39 +24,43 @@ wtf.scriptTitle(`WTEngine Make Script Utility`)
 const argv = minimist(process.argv.slice(2))
 
 const inFile = argv._[0]
-if(inFile === undefined) scriptError('Please specify an input file.')
+if (inFile === undefined) scriptError('Please specify an input file.')
 
 const outFile = (() => {
-  if(argv._[1] === undefined) return inFile.split('.')[0] += '.sdf'
-  if(argv._[1].split('.')[1] === undefined) return argv._[1] += '.sdf'
+  if (argv._[1] === undefined) return inFile.split('.')[0] += '.sdf'
+  if (argv._[1].split('.')[1] === undefined) return argv._[1] += '.sdf'
   else return argv._[1]
 })()
 
-if(!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`)
-if(fs.existsSync(argv[1]) && !wtf.confirmPrompt(`Output file '${outFile}' exists, overwrite?`))
-  scriptError(`Output file '${outFile}' already exists.`)
+if (!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`)
+await (async () => {
+  if (fs.existsSync(outFile) &&
+      !await wtf.confirmPrompt(`Output file '${outFile}' exists, overwrite?`))
+    scriptError(`Output file '${outFile}' already exists.`)
+})()
 
 /*
  * Parse the input file
  */
 console.log(`Parsing data file '${inFile}'...\n`)
-let gameData:any = null
-
-switch(inFile.split('.')[1].toLowerCase()) {
-  /* CSV file data */
-  case 'csv':
-    gameData = csv.parse(fs.readFileSync(inFile))
-    break
-  /* JSON file data */
-  case 'json':
-    gameData = []
-    {const tempData = JSON.parse(fs.readFileSync(inFile).toString())
-    Object.keys(tempData).forEach(key => { gameData.push(tempData[key]) })}
-    break
-  /* Unsupported file types */
-  default:
-    scriptError(`File format '${inFile.split('.')[1]}' not supported.`)
-}
+const gameData:any = (() => {
+  if(inFile.split('.')[1] === undefined)
+    scriptError('Unable to determine file type!  Please add an extension.')
+  switch (inFile.split('.')[1].toLowerCase()) {
+    /* CSV file data */
+    case 'csv':
+      return csv.parse(fs.readFileSync(inFile))
+    /* JSON file data */
+    case 'json':
+      let gameData:any = []
+      {const tempData = JSON.parse(fs.readFileSync(inFile).toString())
+      Object.keys(tempData).forEach(key => { gameData.push(tempData[key]) })}
+      return gameData
+    /* Unsupported file types */
+    default:
+      scriptError(`File format '${inFile.split('.')[1]}' not supported.`)
+  }
+})()
 
 if(gameData == null || !(gameData instanceof Array))
   scriptError('Parsing game data failed.')
@@ -86,7 +90,7 @@ gameData.forEach((row:any) => {
 })
 
 //  Verify data generated
-if(Buffer.byteLength(dataBuffer, 'utf8') == 0)
+if (Buffer.byteLength(dataBuffer, 'utf8') == 0)
   scriptError('No data generated.')
 
 /*
