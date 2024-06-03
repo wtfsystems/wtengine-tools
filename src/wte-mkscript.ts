@@ -40,6 +40,9 @@ const createScriptData = (inFile:string, outFile:string):void => {
         {const tempData = JSON.parse(fs.readFileSync(inFile).toString())
         Object.keys(tempData).forEach(key => { tempGameData.push(tempData[key]) })}
         return tempGameData
+      case 'yml':
+        scriptError('Not yet supported')
+        break
       /* Unsupported file types */
       default:
         scriptError(`File format '${inFile.split('.')[1]}' not supported!`)
@@ -53,8 +56,8 @@ const createScriptData = (inFile:string, outFile:string):void => {
   console.log(`${gameData.length} rows read.\n`)
 
   /*
-  * Generate the data file buffer
-  */
+   * Generate the data file buffer
+   */
   console.log(`Generating game data file '${outFile}'...`)
 
   /** Header to identify file stored in buffer */
