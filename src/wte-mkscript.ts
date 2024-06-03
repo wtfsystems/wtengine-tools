@@ -105,7 +105,8 @@ const commandCount = Buffer.alloc(4)
 commandCount.writeUInt8(rowCounter)
 
 const outBuffer = Buffer.concat([
-  fileHeader, fileVersion, commandCount, dataBuffer
+  fileHeader, fileVersion, commandCount, dataBuffer,
+  Buffer.from('2D454E442D', 'hex')  //  File footer
 ])
 
 /*
