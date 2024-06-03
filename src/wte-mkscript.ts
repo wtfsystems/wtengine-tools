@@ -101,10 +101,11 @@ if (Buffer.byteLength(dataBuffer, 'utf8') === 0)
   scriptError('No data generated.')
 
 //  Create final output buffer
+const commandCount = Buffer.alloc(4)
+commandCount.writeUInt8(rowCounter)
+
 const outBuffer = Buffer.concat([
-  fileHeader,
-  fileVersion,
-  dataBuffer
+  fileHeader, fileVersion, commandCount, dataBuffer
 ])
 
 /*
