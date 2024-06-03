@@ -75,13 +75,13 @@ export const paths = {
  */
 export const files = {
   /** Configuration script location */
-  CONFIG_SCRIPT:    path.join(import.meta.dirname, 'wte-config.js'),
+  CONFIG_SCRIPT:    path.join(import.meta.dirname, 'wte.config.js'),
   /** System check script location */
-  SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'wte-syscheck.js'),
+  SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'wte.syscheck.js'),
   /** Settings file location relevant to {@link PROJECT.ROOT_LOCATION} */
-  SETTINGS_FILE:    path.join(PROJECT.ROOT_LOCATION, 'wte-settings.json'),
+  SETTINGS_FILE:    path.join(PROJECT.ROOT_LOCATION, 'wte.settings.json'),
   /** Log file location relevant to {@link PROJECT.ROOT_LOCATION} */
-  LOG_FILE:         path.join(PROJECT.ROOT_LOCATION, 'wte-build.log')
+  LOG_FILE:         path.join(PROJECT.ROOT_LOCATION, 'wte.build.log')
 }
 
 /**
