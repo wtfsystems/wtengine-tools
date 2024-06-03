@@ -130,7 +130,7 @@ program
   .argument('[outFile]', 'Output file - optional, will use input name if not provided')
   .action(async (inFile, outFile) => {
     if (!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`)
-    if (outFile === undefined) outFile = inFile.split('.')[0]
+    if (outFile === undefined) outFile = inFile.split('.').at(0)
     if (outFile.split('.').at(-1) === undefined || outFile.split('.').at(-1) !== '.sdf')
       outFile += '.sdf'
 
