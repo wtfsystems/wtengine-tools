@@ -64,7 +64,7 @@ const gameData:any = (() => {
   }
 })()
 
-if(gameData == null || !(gameData instanceof Array))
+if(gameData === null || !(gameData instanceof Array))
   scriptError('Parsing game data failed!')
 
 console.log(`Parsed datafile '${inFile}.'`)
