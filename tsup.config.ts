@@ -6,7 +6,11 @@ export default defineConfig({
     "./src/wte-mkscript.ts",
     "./src/wte-syscheck.ts"
   ],
+  platform: "node",
   format: "esm",
+  dts: false,
   sourcemap: false,
-  clean: true
+  clean: true,
+  minify: true,
+  bundle: true,
 })
