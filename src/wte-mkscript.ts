@@ -28,7 +28,7 @@ const argv = minimist(process.argv.slice(2))
 const inFile = argv._[0]
 if (inFile === undefined) scriptError('Please specify an input file!')
 if (!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`)
-if(inFile.split('.')[1] !== 'sdf')
+if (inFile.split('.')[1] !== 'sdf')
   scriptError(`Unable to determine file type!  Extension type must be '.sdf'`)
 
 const outFile = (() => {
