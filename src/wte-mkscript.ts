@@ -131,7 +131,8 @@ program
   .action(async (inFile, outFile) => {
     if (!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`)
     if (outFile === undefined) outFile = inFile.split('.')[0]
-    if (outFile.split('.')[1] === undefined) outFile += '.sdf'
+    if (outFile.split('.').at(-1) === undefined || outFile.split('.').at(-1) !== '.sdf')
+      outFile += '.sdf'
 
     await (async () => {
       if (fs.existsSync(outFile) &&
