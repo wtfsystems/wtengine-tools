@@ -90,7 +90,7 @@ gameData.forEach((row:any) => {
 })
 
 //  Verify data generated
-if (Buffer.byteLength(dataBuffer, 'utf8') == 0)
+if (Buffer.byteLength(dataBuffer, 'utf8') === 0)
   scriptError('No data generated.')
 
 /*
