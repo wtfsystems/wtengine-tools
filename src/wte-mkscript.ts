@@ -135,5 +135,6 @@ program
 
     createScriptData(inFile, outFile)
   })
+  program.showHelpAfterError()
 await program.parseAsync()
 process.exit(0)
