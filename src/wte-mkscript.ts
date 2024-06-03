@@ -26,7 +26,9 @@ wtf.scriptTitle(`WTEngine Make Script Utility`)
 const argv = minimist(process.argv.slice(2))
 
 const inFile = argv._[0]
-if (inFile === undefined) scriptError('Please specify an input file.')
+if (inFile === undefined) scriptError('Please specify an input file!')
+if(inFile.split('.')[1] === undefined || inFile.split('.')[1] !== 'sdf')
+  scriptError(`Unable to determine file type!  Extension type must be '.sdf'`)
 
 const outFile = (() => {
   if (argv._[1] === undefined) return inFile.split('.')[0] += '.sdf'
@@ -38,7 +40,7 @@ if (!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`
 await (async () => {
   if (fs.existsSync(outFile) &&
       !await wtf.confirmPrompt(`Output file '${outFile}' exists, overwrite?`))
-    scriptError(`Output file '${outFile}' already exists.`)
+    scriptError(`Output file '${outFile}' already exists!`)
 })()
 
 /*
@@ -46,8 +48,6 @@ await (async () => {
  */
 console.log(`Parsing data file '${inFile}'...\n`)
 const gameData:any = (() => {
-  if(inFile.split('.')[1] === undefined)
-    scriptError('Unable to determine file type!  Please add an extension.')
   switch (inFile.split('.')[1].toLowerCase()) {
     /* CSV file data */
     case 'csv':
@@ -60,12 +60,12 @@ const gameData:any = (() => {
       return gameData
     /* Unsupported file types */
     default:
-      scriptError(`File format '${inFile.split('.')[1]}' not supported.`)
+      scriptError(`File format '${inFile.split('.')[1]}' not supported!`)
   }
 })()
 
 if(gameData == null || !(gameData instanceof Array))
-  scriptError('Parsing game data failed.')
+  scriptError('Parsing game data failed!')
 
 console.log(`Parsed datafile '${inFile}.'`)
 console.log(`${gameData.length} rows read.\n`)
@@ -83,7 +83,7 @@ let dataBuffer = Buffer.alloc(0)  //  Buffer to store binary file
 
 gameData.forEach((row:any) => {
   rowCounter++
-  if(row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length.`)
+  if(row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length!`)
 
   //  Write each message:  timer / sys / to / from / cmd / arg
   const timerBuffer = Buffer.alloc(8)
@@ -98,7 +98,7 @@ gameData.forEach((row:any) => {
 
 //  Verify data generated
 if (Buffer.byteLength(dataBuffer, 'utf8') === 0 || rowCounter === 0)
-  scriptError('No data generated.')
+  scriptError('No data generated!')
 
 //  Create final output buffer
 const commandCount = Buffer.alloc(4)
