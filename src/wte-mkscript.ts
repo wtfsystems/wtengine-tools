@@ -16,6 +16,8 @@ import { dim, cyan } from 'kolorist'
 import { scriptError } from '@spongex/script-error'
 import * as wtf from './_common.js'
 
+const SAVE_FILE_VERSION = 'v0.9.0'
+
 wtf.scriptTitle(`WTEngine Make Script Utility`)
 
 /*
@@ -72,8 +74,13 @@ console.log(`${gameData.length} rows read.\n`)
  * Generate the data file buffer
  */
 console.log(`Generating game data file '${outFile}'...`)
+
+const fileHeader = Buffer.from('46445300', 'hex')   //  Header to identify file
+const fileVersion = Buffer.from(SAVE_FILE_VERSION)  //  Save file version
+
 let rowCounter = Number(0)        //  Row counter for error reporting
 let dataBuffer = Buffer.alloc(0)  //  Buffer to store binary file
+
 gameData.forEach((row:any) => {
   rowCounter++
   if(row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length.`)
