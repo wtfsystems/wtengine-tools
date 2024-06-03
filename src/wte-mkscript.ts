@@ -10,7 +10,7 @@ import fs from 'node:fs'
 import { Buffer } from 'node:buffer'
 
 import minimist from 'minimist'
-import * as csv from 'csv/sync'
+import { parse as csvParse } from 'csv-parse/sync'
 import { dim, cyan } from 'kolorist'
 
 import { scriptError } from '@spongex/script-error'
@@ -51,7 +51,7 @@ const gameData:any = (() => {
   switch (inFile.split('.')[1].toLowerCase()) {
     /* CSV file data */
     case 'csv':
-      return csv.parse(fs.readFileSync(inFile))
+      return csvParse(fs.readFileSync(inFile), { skip_empty_lines: true })
     /* JSON file data */
     case 'json':
       let gameData:any = []
