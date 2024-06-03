@@ -119,10 +119,9 @@ wtf.scriptTitle(`WTEngine Make Script Utility`)
 const program = new Command()
 program
   .name('wte-mkscript')
-  .description('description')
-  .version(`${wtf.scriptInfo.VERSION}`)
-  .argument('<inFile>', 'Input file')
-  .argument('[outFile]', 'Output file')
+  .description('Convert csv, json, or (soon) yml files to WTEngine scripts')
+  .argument('<inFile>', 'Input file - required')
+  .argument('[outFile]', 'Output file - optional, will use input name if not provided')
   .action(async (inFile, outFile) => {
     if (!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`)
     if (outFile === undefined) outFile = inFile.split('.')[0]
