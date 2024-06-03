@@ -100,13 +100,20 @@ gameData.forEach((row:any) => {
 if (Buffer.byteLength(dataBuffer, 'utf8') === 0)
   scriptError('No data generated.')
 
+//  Create final output buffer
+const outBuffer = Buffer.concat([
+  fileHeader,
+  fileVersion,
+  dataBuffer
+])
+
 /*
  * Write out the data file buffer
  */
 try {
-  fs.writeFileSync(outFile, dataBuffer)
+  fs.writeFileSync(outFile, outBuffer)
   console.log(`\nWrote data file '${outFile}'\n${rowCounter} total commands.`)
-  console.log(`Size: ${Buffer.byteLength(dataBuffer, 'utf8')} bytes.\n`)
+  console.log(`Size: ${Buffer.byteLength(outBuffer, 'utf8')} bytes.\n`)
 } catch (error:any) { scriptError(error.message) }
 
 console.log(dim(cyan(`Script conversion done!\n`)))
