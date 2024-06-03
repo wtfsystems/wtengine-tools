@@ -8,6 +8,8 @@
 
 import fs from 'node:fs'
 import { Buffer } from 'node:buffer'
+
+import minimist from 'minimist'
 import * as csv from 'csv/sync'
 import { dim, cyan } from 'kolorist'
 
@@ -19,53 +21,60 @@ wtf.scriptTitle(`WTEngine Make Script Utility`)
 /*
  * Process command arguments
  */
-const args = process.argv.slice(2)
-if(args[0] === undefined) scriptError('Please specify an input file.')
-if(!fs.existsSync(args[0])) scriptError(`Input file '${args[0]}' does not exist.`)
-if(args[1] === undefined) args[1] = args[0].split('.')[0]
-if(args[1].split('.')[1] === undefined) args[1] += '.sdf'
-if(fs.existsSync(args[1]) && !wtf.confirmPrompt(`Output file '${args[1]}' exists, overwrite?`))
-  scriptError(`Output file '${args[1]}' already exists.`)
+const argv = minimist(process.argv.slice(2))
+
+const inFile = argv._[0]
+if(inFile === undefined) scriptError('Please specify an input file.')
+
+const outFile = (() => {
+  if(argv._[1] === undefined) return inFile.split('.')[0] += '.sdf'
+  if(argv._[1].split('.')[1] === undefined) return argv._[1] += '.sdf'
+  else return argv._[1]
+})()
+
+if(!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`)
+if(fs.existsSync(argv[1]) && !wtf.confirmPrompt(`Output file '${outFile}' exists, overwrite?`))
+  scriptError(`Output file '${outFile}' already exists.`)
 
 /*
  * Parse the input file
  */
-console.log(`Parsing data file '${args[0]}'...\n`)
+console.log(`Parsing data file '${inFile}'...\n`)
 let gameData:any = null
 
-switch(args[0].split('.')[1].toLowerCase()) {
+switch(inFile.split('.')[1].toLowerCase()) {
   /* CSV file data */
   case 'csv':
-    gameData = csv.parse(fs.readFileSync(args[0]))
+    gameData = csv.parse(fs.readFileSync(inFile))
     break
   /* JSON file data */
   case 'json':
     gameData = []
-    {const tempData = JSON.parse(fs.readFileSync(args[0]).toString())
+    {const tempData = JSON.parse(fs.readFileSync(inFile).toString())
     Object.keys(tempData).forEach(key => { gameData.push(tempData[key]) })}
     break
   /* Unsupported file types */
   default:
-    scriptError(`File format '${args[0].split('.')[1]}' not supported.`)
+    scriptError(`File format '${inFile.split('.')[1]}' not supported.`)
 }
 
 if(gameData == null || !(gameData instanceof Array))
   scriptError('Parsing game data failed.')
 
-console.log(`Parsed datafile '${args[0]}.'`)
+console.log(`Parsed datafile '${inFile}.'`)
 console.log(`${gameData.length} rows read.\n`)
 
 /*
  * Generate the data file buffer
  */
-console.log(`Generating game data file '${args[1]}'...`)
+console.log(`Generating game data file '${outFile}'...`)
 let rowCounter = Number(0)        //  Row counter for error reporting
 let dataBuffer = Buffer.alloc(0)  //  Buffer to store binary file
 gameData.forEach((row:any) => {
   rowCounter++
   if(row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length.`)
 
-  //  Write each message:  timer / sys / to / from / cmd / args
+  //  Write each message:  timer / sys / to / from / cmd / arg
   const timerBuffer = Buffer.alloc(8)
   timerBuffer.writeBigInt64LE(BigInt.asIntN(64, row[0]))
   dataBuffer = Buffer.concat([dataBuffer, Buffer.concat([
@@ -84,8 +93,8 @@ if(Buffer.byteLength(dataBuffer, 'utf8') == 0)
  * Write out the data file buffer
  */
 try {
-  fs.writeFileSync(args[1], dataBuffer)
-  console.log(`\nWrote data file '${args[1]}'\n${rowCounter} total commands.`)
+  fs.writeFileSync(outFile, dataBuffer)
+  console.log(`\nWrote data file '${outFile}'\n${rowCounter} total commands.`)
   console.log(`Size: ${Buffer.byteLength(dataBuffer, 'utf8')} bytes.\n`)
 } catch (error:any) { scriptError(error.message) }
 
