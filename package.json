@@ -35,6 +35,9 @@
     "LICENSE.md",
     "README.md"
   ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
     "@spongex/script-error": "^1.0.0",
     "@spongex/system-locale": "^1.0.0",
