@@ -16,6 +16,7 @@ import { dim, cyan } from 'kolorist'
 import { scriptError } from '@spongex/script-error'
 import * as wtf from './_common.js'
 
+/** Save version number - relevant to itself and not the script */
 const SAVE_FILE_VERSION = 'v0.9.0'
 
 /**
@@ -56,11 +57,15 @@ const createScriptData = (inFile:string, outFile:string):void => {
   */
   console.log(`Generating game data file '${outFile}'...`)
 
-  const fileHeader = Buffer.from('46445300', 'hex')   //  Header to identify file
-  const fileVersion = Buffer.from(SAVE_FILE_VERSION)  //  Save file version
+  /** Header to identify file stored in buffer */
+  const fileHeader = Buffer.from('46445300', 'hex')
+  /** Save file version stored in buffer */
+  const fileVersion = Buffer.from(SAVE_FILE_VERSION)
 
-  let rowCounter = Number(0)        //  Row counter for error reporting
-  let dataBuffer = Buffer.alloc(0)  //  Buffer to store binary file
+  /** Row counter for error reporting */
+  let rowCounter = Number(0)
+  /** Buffer to store binary file */
+  let dataBuffer = Buffer.alloc(0)
 
   gameData.forEach((row:any) => {
     rowCounter++
@@ -90,8 +95,10 @@ const createScriptData = (inFile:string, outFile:string):void => {
    * commandCount - 32bits - Total number of proceeding commands
    * dataBuffer - blob - List of all commands to run
    */
+  /** Total number of commands in file */
   const commandCount = Buffer.alloc(4)
   commandCount.writeUInt8(rowCounter)
+  /** File output buffer */
   const outBuffer = Buffer.concat([
     fileHeader, fileVersion, commandCount, dataBuffer
   ])
