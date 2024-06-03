@@ -100,8 +100,7 @@ export const scriptTitle = (title:string, log?:boolean):void => {
   if(log) {
     writeLog(`${title} - ${scriptInfo.NAME} - ver ${scriptInfo.VERSION}\n`)
     writeLog(`${scriptInfo.URL}\n`)
-    writeLog(`Run time:  `)
-    writeLog(new Date().toLocaleString(__locale, { timeZoneName: 'short' }))
+    writeLog(`Ran at: ` + new Date().toLocaleString(__locale, { timeZoneName: 'short' }))
     writeLog(`\n\n`)
   }
 }
