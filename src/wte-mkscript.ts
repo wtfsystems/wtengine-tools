@@ -115,6 +115,9 @@ const createScriptData = (inFile:string, outFile:string):void => {
   console.log(dim(cyan(`Script conversion done!\n`)))
 }
 
+/*
+ * SCRIPT START
+ */
 wtf.scriptTitle(`WTEngine Make Script Utility`)
 const program = new Command()
 program
