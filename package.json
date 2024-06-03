@@ -25,7 +25,9 @@
     "prepublishOnly": "tsup"
   },
   "bin": {
-    "wte-mkscript": "dist/wte-mkscript.js"
+    "wte-config": "dist/wte-config.js",
+    "wte-mkscript": "dist/wte-mkscript.js",
+    "wte-syscheck": "dist/wte-syscheck.js"
   },
   "type": "module",
   "files": [
