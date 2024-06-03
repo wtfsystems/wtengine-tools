@@ -41,7 +41,7 @@ const createScriptData = (inFile:string, outFile:string):void => {
         Object.keys(tempData).forEach(key => { tempGameData.push(tempData[key]) })}
         return tempGameData
       case 'yml':
-        scriptError('Not yet supported')
+        scriptError('Not yet supported!')
         break
       /* Unsupported file types */
       default:
