@@ -35,17 +35,17 @@ const createScriptData = (inFile:string, outFile:string):void => {
         return csvParse(fs.readFileSync(inFile), { skip_empty_lines: true })
       /* JSON file data */
       case 'json':
-        let gameData:any = []
+        let tempGameData:any = []
         {const tempData = JSON.parse(fs.readFileSync(inFile).toString())
-        Object.keys(tempData).forEach(key => { gameData.push(tempData[key]) })}
-        return gameData
+        Object.keys(tempData).forEach(key => { tempGameData.push(tempData[key]) })}
+        return tempGameData
       /* Unsupported file types */
       default:
         scriptError(`File format '${inFile.split('.')[1]}' not supported!`)
     }
   })()
 
-  if(gameData === null || !(gameData instanceof Array))
+  if(gameData === null || gameData === undefined || !(gameData instanceof Array))
     scriptError('Parsing game data failed!')
 
   console.log(`Parsed datafile '${inFile}.'`)
@@ -118,7 +118,6 @@ program
   .argument('[outFile]', 'Output file')
   .action(async (inFile, outFile) => {
     if (!fs.existsSync(inFile)) scriptError(`Input file '${inFile}' does not exist.`)
-
     if (outFile === undefined) outFile = inFile.split('.')[0]
     if (outFile.split('.')[1] === undefined) outFile += '.sdf'
 
@@ -130,5 +129,5 @@ program
 
     createScriptData(inFile, outFile)
   })
-program.parse()
+await program.parseAsync()
 process.exit(0)
