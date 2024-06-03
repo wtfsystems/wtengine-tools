@@ -100,13 +100,21 @@ gameData.forEach((row:any) => {
 if (Buffer.byteLength(dataBuffer, 'utf8') === 0 || rowCounter === 0)
   scriptError('No data generated!')
 
-//  Create final output buffer
+/*
+ * Create final output buffer
+ *
+ * --- FILE FORMAT ---
+ * fileHeader - 16 bits - File header for identification
+ * fileVersion - 24 bits - Version number of the script file
+ * commandCount - 32bits - Total number of proceeding commands
+ * dataBuffer - blob - List of all commands to run
+ * fileFooter - 24 bits - File footer for identification
+ */
 const commandCount = Buffer.alloc(4)
 commandCount.writeUInt8(rowCounter)
-
 const outBuffer = Buffer.concat([
   fileHeader, fileVersion, commandCount, dataBuffer,
-  Buffer.from('2D454E442D', 'hex')  //  File footer
+  Buffer.from('A02D454E442D', 'hex')  //  File footer
 ])
 
 /*
