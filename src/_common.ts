@@ -78,10 +78,10 @@ export const files = {
   CONFIG_SCRIPT:    path.join(import.meta.dirname, 'wte-config.js'),
   /** System check script location */
   SYSCHECK_SCRIPT:  path.join(import.meta.dirname, 'wte-syscheck.js'),
-  /** Settings file location relevant to {@link PROJECT.#ROOT_LOCATION} */
-  SETTINGS_FILE:    path.join(PROJECT.ROOT_LOCATION, 'settings.json'),
-  /** Log file location relevant to {@link PROJECT.#ROOT_LOCATION} */
-  LOG_FILE:         path.join(PROJECT.ROOT_LOCATION, 'build.log')
+  /** Settings file location relevant to {@link PROJECT.ROOT_LOCATION} */
+  SETTINGS_FILE:    path.join(PROJECT.ROOT_LOCATION, 'wte-settings.json'),
+  /** Log file location relevant to {@link PROJECT.ROOT_LOCATION} */
+  LOG_FILE:         path.join(PROJECT.ROOT_LOCATION, 'wte-build.log')
 }
 
 /**
