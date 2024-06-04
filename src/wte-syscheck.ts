@@ -23,4 +23,4 @@ wtf.config.checkApps.forEach((app:string) => {
   }
 })
 
-process.exit(1)
+process.exit(res)
