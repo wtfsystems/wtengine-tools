@@ -14,7 +14,7 @@ import { parse as csvParse } from 'csv-parse/sync'
 import { dim, cyan } from 'kolorist'
 
 import { scriptError } from '@spongex/script-error'
-import * as wtf from './_common.js'
+import { scriptTitle, confirmPrompt } from './_common.js'
 
 /** Save version number - relevant to itself and not the script */
 const SAVE_FILE_VERSION = 'v0.9.0'
@@ -121,7 +121,7 @@ const createScriptData = (inFile:string, outFile:string):void => {
 /*
  * SCRIPT START
  */
-wtf.scriptTitle(`WTEngine Make Script Utility`)
+scriptTitle(`WTEngine Make Script Utility`)
 const program = new Command()
 program
   .name('wte-mkscript')
@@ -136,7 +136,7 @@ program
 
     await (async () => {
       if (fs.existsSync(outFile) &&
-          !await wtf.confirmPrompt(`Output file '${outFile}' exists, overwrite?`))
+          !await confirmPrompt(`Output file '${outFile}' exists, overwrite?`))
         scriptError(`Output file '${outFile}' already exists!`)
     })()
 
