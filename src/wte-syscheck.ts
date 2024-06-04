@@ -8,15 +8,15 @@
 
 import { lookpathSync } from 'find-bin'
 import { red, green } from 'kolorist'
-import * as wtf from './_common.js'
+import { config, scriptTitle } from './_common.js'
 
-wtf.scriptTitle(`WTEngine System Check Utility`)
+scriptTitle(`WTEngine System Check Utility`)
 
 /** Exit code for script */
 let res = 0
 
 //  Check if necessary apps can be reached via command line
-wtf.config.checkApps.forEach((app:string) => {
+config.checkApps.forEach((app:string) => {
   if(lookpathSync(app)) {
     console.log(green(`Command '${app}' found`))
   } else {
