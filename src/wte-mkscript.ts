@@ -98,7 +98,7 @@ const createScriptData = (inFile:string, outFile:string):void => {
    * --- FILE FORMAT ---
    * fileHeader - 16 bits - File header for identification
    * fileVersion - 24 bits - Version number of the script file
-   * commandCount - 32bits - Total number of proceeding commands
+   * commandCount - 32 bits - Total number of proceeding commands
    * dataBuffer - blob - List of all commands to run
    */
   /** Total number of commands in file */
