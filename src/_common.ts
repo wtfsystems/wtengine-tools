@@ -150,27 +150,30 @@ export const confirmPrompt = async (message:string, dvalue?:boolean):Promise<boo
 }
 
 /**
- * Check if a folder exists
- * @param folder 
- * @returns True if the folder exists, else false
+ * Save engine settings
+ * @param settings Settings as JSON object
+ * On fail, display error and exit running script
  */
-export const checkFolder = (folder:string):boolean => {
-  try { fs.accessSync(folder) } catch (error:any) { return false }
-  return true
+export const saveSettings = (settings:JSON) => {
+  if(!(settings instanceof Object)) scriptError(`Settings format not valid.`)
+
+  try {
+    fs.writeFileSync(files.SETTINGS_FILE, JSON.stringify(settings))
+    console.log(green(`Settings saved.`))
+  } catch (error:any) {
+    scriptError(error.message)
+  }
 }
 
 /**
- * Check if a folder exists, then create it if one does not
- * @param folder 
- * @throws Error on fail then exits script
+ * Load engine settings
+ * @returns Settings JSON object.  False on fail
  */
-export const makeFolder = (folder:string):void => {
+export const loadSettings = ():string | boolean => {
   try {
-    fs.accessSync(folder)
+    return JSON.parse(fs.readFileSync(files.SETTINGS_FILE).toString())
   } catch (error:any) {
-    try {
-      fs.mkdirSync(folder)
-    } catch (error:any) { scriptError(error.message) }
+    return false
   }
 }
 
@@ -197,34 +200,6 @@ export const checkSettings = (permissions:string):boolean => {
     } catch (error:any) { result = false }
   })
   return result
-}
-
-/**
- * Load engine settings
- * @returns Settings JSON object.  False on fail
- */
-export const loadSettings = ():string | boolean => {
-  try {
-    return JSON.parse(fs.readFileSync(files.SETTINGS_FILE).toString())
-  } catch (error:any) {
-    return false
-  }
-}
-
-/**
- * Save engine settings
- * @param settings Settings as JSON object
- * On fail, display error and exit running script
- */
-export const saveSettings = (settings:JSON) => {
-  if(!(settings instanceof Object)) scriptError(`Settings format not valid.`)
-
-  try {
-    fs.writeFileSync(files.SETTINGS_FILE, JSON.stringify(settings))
-    console.log(green(`Settings saved.`))
-  } catch (error:any) {
-    scriptError(error.message)
-  }
 }
 
 /** Options for runCommand */
@@ -260,8 +235,8 @@ export const runCommand = async (cmd:string, opts?:runCommandOpts) => {
   return await new Promise ((resolve, _reject) => {
     exec(cmd, options, (error, stdout, stderr) => {
       if(log) {
-        if(stdout != ``) writeLog(`Output:\n${stdout}\n`)
-        if(stderr != ``) writeLog(`Error:\n${stderr}\n`)
+        if(stdout !== ``) writeLog(`Output:\n${stdout}\n`)
+        if(stderr !== ``) writeLog(`Error:\n${stderr}\n`)
       }
       if(error) resolve(false)
       resolve(true)
