@@ -12,8 +12,10 @@ import * as wtf from './_common.js'
 
 wtf.scriptTitle(`WTEngine System Check Utility`)
 
+/** Exit code for script */
 let res = 0
 
+//  Check if necessary apps can be reached via command line
 wtf.config.checkApps.forEach((app:string) => {
   if(lookpathSync(app)) {
     console.log(green(`Command '${app}' found`))
