@@ -49,7 +49,10 @@ const createScriptData = (inFile:string, outFile:string):void => {
     }
   })()
 
-  if(gameData === null || gameData === undefined || !(gameData instanceof Array))
+  if (gameData === null ||
+      gameData === undefined ||
+      !(gameData instanceof Array) ||
+      gameData.length === 0)
     scriptError('Parsing game data failed!')
 
   console.log(`Parsed datafile '${inFile}.'`)
@@ -72,7 +75,7 @@ const createScriptData = (inFile:string, outFile:string):void => {
 
   gameData.forEach((row:any) => {
     rowCounter++
-    if(row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length!`)
+    if (row.length !== 6) scriptError(`Row ${rowCounter}: incorrect length!`)
 
     //  Write each message:  timer / sys / to / from / cmd / arg
     const timerBuffer = Buffer.alloc(8)
