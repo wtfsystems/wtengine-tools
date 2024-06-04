@@ -6,6 +6,8 @@
  * @copyright MIT see LICENSE.md
  */
 
-import * as wtf from './_common.js'
+import { scriptTitle} from './_common.js'
 
-wtf.scriptTitle(`WTEngine Configuration Utility`)
+scriptTitle(`WTEngine Configuration Utility`)
+
+process.exit(0)
